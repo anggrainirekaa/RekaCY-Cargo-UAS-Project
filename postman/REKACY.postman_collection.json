@@ -1,0 +1,1244 @@
+{
+  "info": {
+    "name": "RekaCy API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": "Run 'Login' first; it stores the Sanctum token in {{token}}. Admin: admin@rekacy.test, customer: customer@rekacy.test (password: password)."
+  },
+  "item": [
+    {
+      "name": "Login",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Accept",
+            "value": "application/json"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "{{base_url}}/api/login",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "api",
+            "login"
+          ]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"email\": \"operator@rekacy.test\",\n  \"password\": \"password\"\n}"
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('200', () => pm.response.to.have.status(200));",
+              "pm.collectionVariables.set('token', pm.response.json().token);"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "Current user",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Accept",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "{{base_url}}/api/user",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "api",
+            "user"
+          ]
+        },
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{token}}",
+              "type": "string"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "Dashboard",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Accept",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "{{base_url}}/api/dashboard",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "api",
+            "dashboard"
+          ]
+        },
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{token}}",
+              "type": "string"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "List shipments (filtered)",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Accept",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "{{base_url}}/api/shipments?status=IN_TRANSIT&delay=delayed&sort=delay_hours&direction=desc&per_page=10",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "api",
+            "shipments?status=IN_TRANSIT&delay=delayed&sort=delay_hours&direction=desc&per_page=10"
+          ]
+        },
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{token}}",
+              "type": "string"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "Create shipment (operator/admin)",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Accept",
+            "value": "application/json"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "{{base_url}}/api/shipments",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "api",
+            "shipments"
+          ]
+        },
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{token}}",
+              "type": "string"
+            }
+          ]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"customer_id\": 4,\n  \"carrier_id\": 1,\n  \"origin_id\": 1,\n  \"destination_id\": 8,\n  \"cargo_type\": \"Coffee beans\",\n  \"weight_kg\": 12000,\n  \"volume_cbm\": 45.5,\n  \"expected_departure_at\": \"2026-11-10 08:00:00\",\n  \"expected_arrival_at\": \"2026-12-05 08:00:00\",\n  \"items\": [\n    {\n      \"description\": \"Green coffee, 60kg bags\",\n      \"quantity\": 200\n    }\n  ]\n}"
+        }
+      }
+    },
+    {
+      "name": "Show shipment",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Accept",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "{{base_url}}/api/shipments/1",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "api",
+            "shipments",
+            "1"
+          ]
+        },
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{token}}",
+              "type": "string"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "Update shipment",
+      "request": {
+        "method": "PUT",
+        "header": [
+          {
+            "key": "Accept",
+            "value": "application/json"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "{{base_url}}/api/shipments/1",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "api",
+            "shipments",
+            "1"
+          ]
+        },
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{token}}",
+              "type": "string"
+            }
+          ]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"customer_id\": 4,\n  \"carrier_id\": 1,\n  \"origin_id\": 1,\n  \"destination_id\": 8,\n  \"cargo_type\": \"Coffee beans\",\n  \"weight_kg\": 12500,\n  \"expected_departure_at\": \"2026-11-10 08:00:00\",\n  \"expected_arrival_at\": \"2026-12-05 08:00:00\",\n  \"estimated_arrival_at\": \"2026-12-06 10:00:00\",\n  \"items\": [\n    {\n      \"description\": \"Green coffee\",\n      \"quantity\": 210\n    }\n  ]\n}"
+        }
+      }
+    },
+    {
+      "name": "Delete shipment (admin)",
+      "request": {
+        "method": "DELETE",
+        "header": [
+          {
+            "key": "Accept",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "{{base_url}}/api/shipments/1",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "api",
+            "shipments",
+            "1"
+          ]
+        },
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{token}}",
+              "type": "string"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "Tracking timeline",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Accept",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "{{base_url}}/api/shipments/1/tracking",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "api",
+            "shipments",
+            "1",
+            "tracking"
+          ]
+        },
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{token}}",
+              "type": "string"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "Add tracking event (status change)",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Accept",
+            "value": "application/json"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "{{base_url}}/api/shipments/1/tracking",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "api",
+            "shipments",
+            "1",
+            "tracking"
+          ]
+        },
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{token}}",
+              "type": "string"
+            }
+          ]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"status\": \"BOOKED\",\n  \"description\": \"Space confirmed\"\n}"
+        }
+      }
+    },
+    {
+      "name": "Add tracking event (invalid jump \u2192 422)",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Accept",
+            "value": "application/json"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "{{base_url}}/api/shipments/1/tracking",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "api",
+            "shipments",
+            "1",
+            "tracking"
+          ]
+        },
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{token}}",
+              "type": "string"
+            }
+          ]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"status\": \"DELIVERED\"\n}"
+        }
+      }
+    },
+    {
+      "name": "List exceptions",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Accept",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "{{base_url}}/api/shipments/1/exceptions",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "api",
+            "shipments",
+            "1",
+            "exceptions"
+          ]
+        },
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{token}}",
+              "type": "string"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "Open exception",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Accept",
+            "value": "application/json"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "{{base_url}}/api/shipments/1/exceptions",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "api",
+            "shipments",
+            "1",
+            "exceptions"
+          ]
+        },
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{token}}",
+              "type": "string"
+            }
+          ]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"type\": \"CUSTOMS_HOLD\",\n  \"description\": \"Documents under review\"\n}"
+        }
+      }
+    },
+    {
+      "name": "Update exception",
+      "request": {
+        "method": "PATCH",
+        "header": [
+          {
+            "key": "Accept",
+            "value": "application/json"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "{{base_url}}/api/exceptions/1",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "api",
+            "exceptions",
+            "1"
+          ]
+        },
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{token}}",
+              "type": "string"
+            }
+          ]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"status\": \"RESOLVED\",\n  \"resolution_note\": \"Cleared by customs\"\n}"
+        }
+      }
+    },
+    {
+      "name": "Carriers",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Accept",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "{{base_url}}/api/carriers",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "api",
+            "carriers"
+          ]
+        },
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{token}}",
+              "type": "string"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "Create carrier (admin)",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Accept",
+            "value": "application/json"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "{{base_url}}/api/carriers",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "api",
+            "carriers"
+          ]
+        },
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{token}}",
+              "type": "string"
+            }
+          ]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"name\": \"Test Lines\",\n  \"code\": \"TST\",\n  \"mode\": \"sea\"\n}"
+        }
+      }
+    },
+    {
+      "name": "Locations",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Accept",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "{{base_url}}/api/locations",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "api",
+            "locations"
+          ]
+        },
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{token}}",
+              "type": "string"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "Create location (admin)",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Accept",
+            "value": "application/json"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "{{base_url}}/api/locations",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "api",
+            "locations"
+          ]
+        },
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{token}}",
+              "type": "string"
+            }
+          ]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"name\": \"Port of Test\",\n  \"city\": \"Testville\",\n  \"country\": \"Nowhere\",\n  \"type\": \"port\",\n  \"latitude\": 1.23,\n  \"longitude\": 103.8\n}"
+        }
+      }
+    },
+    {
+      "name": "Weather at last position",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Accept",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "{{base_url}}/api/shipments/1/weather",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "api",
+            "shipments",
+            "1",
+            "weather"
+          ]
+        },
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{token}}",
+              "type": "string"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "Geocode",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Accept",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "{{base_url}}/api/geocode?q=Belawan",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "api",
+            "geocode?q=Belawan"
+          ]
+        },
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{token}}",
+              "type": "string"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "Logout",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Accept",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "{{base_url}}/api/logout",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "api",
+            "logout"
+          ]
+        },
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{token}}",
+              "type": "string"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "List exceptions (all shipments)",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Accept",
+            "value": "application/json"
+          }
+        ],
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{token}}",
+              "type": "string"
+            }
+          ]
+        },
+        "url": {
+          "raw": "{{base_url}}/api/exceptions?status=OPEN&severity=HIGH",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "api",
+            "exceptions"
+          ]
+        }
+      }
+    },
+    {
+      "name": "Assign exception + change severity",
+      "request": {
+        "method": "PATCH",
+        "header": [
+          {
+            "key": "Accept",
+            "value": "application/json"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{token}}",
+              "type": "string"
+            }
+          ]
+        },
+        "url": {
+          "raw": "{{base_url}}/api/exceptions/1",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "api",
+            "exceptions",
+            "1"
+          ]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"assigned_to\": 2,\n  \"severity\": \"HIGH\",\n  \"status\": \"INVESTIGATING\"\n}"
+        }
+      }
+    },
+    {
+      "name": "Add investigation note",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Accept",
+            "value": "application/json"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{token}}",
+              "type": "string"
+            }
+          ]
+        },
+        "url": {
+          "raw": "{{base_url}}/api/exceptions/1/notes",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "api",
+            "exceptions",
+            "1",
+            "notes"
+          ]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"body\": \"Called the customs broker\"\n}"
+        }
+      }
+    },
+    {
+      "name": "Global search",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Accept",
+            "value": "application/json"
+          }
+        ],
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{token}}",
+              "type": "string"
+            }
+          ]
+        },
+        "url": {
+          "raw": "{{base_url}}/api/search?q=coffee",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "api",
+            "search"
+          ]
+        }
+      }
+    },
+    {
+      "name": "Couriers (staff)",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Accept",
+            "value": "application/json"
+          }
+        ],
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{token}}",
+              "type": "string"
+            }
+          ]
+        },
+        "url": {
+          "raw": "{{base_url}}/api/couriers",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "api",
+            "couriers"
+          ]
+        }
+      }
+    },
+    {
+      "name": "Assign courier to BOOKED shipment (staff)",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Accept",
+            "value": "application/json"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{token}}",
+              "type": "string"
+            }
+          ]
+        },
+        "url": {
+          "raw": "{{base_url}}/api/shipments/1/assign",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "api",
+            "shipments",
+            "1",
+            "assign"
+          ]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"courier_id\": 1,\n  \"notes\": \"Fragile\"\n}"
+        }
+      }
+    },
+    {
+      "name": "Cancel assignment (staff)",
+      "request": {
+        "method": "DELETE",
+        "header": [
+          {
+            "key": "Accept",
+            "value": "application/json"
+          }
+        ],
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{token}}",
+              "type": "string"
+            }
+          ]
+        },
+        "url": {
+          "raw": "{{base_url}}/api/assignments/1",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "api",
+            "assignments",
+            "1"
+          ]
+        }
+      }
+    },
+    {
+      "name": "Live location of a shipment",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Accept",
+            "value": "application/json"
+          }
+        ],
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{token}}",
+              "type": "string"
+            }
+          ]
+        },
+        "url": {
+          "raw": "{{base_url}}/api/shipments/1/live-location",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "api",
+            "shipments",
+            "1",
+            "live-location"
+          ]
+        }
+      }
+    },
+    {
+      "name": "Live metrics (staff)",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Accept",
+            "value": "application/json"
+          }
+        ],
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{token}}",
+              "type": "string"
+            }
+          ]
+        },
+        "url": {
+          "raw": "{{base_url}}/api/live/metrics",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "api",
+            "live",
+            "metrics"
+          ]
+        }
+      }
+    },
+    {
+      "name": "[Courier] My tasks",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Accept",
+            "value": "application/json"
+          }
+        ],
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{token}}",
+              "type": "string"
+            }
+          ]
+        },
+        "url": {
+          "raw": "{{base_url}}/api/courier/tasks",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "api",
+            "courier",
+            "tasks"
+          ]
+        }
+      }
+    },
+    {
+      "name": "[Courier] Start GPS tracking",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Accept",
+            "value": "application/json"
+          }
+        ],
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{token}}",
+              "type": "string"
+            }
+          ]
+        },
+        "url": {
+          "raw": "{{base_url}}/api/courier/tracking/start",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "api",
+            "courier",
+            "tracking",
+            "start"
+          ]
+        }
+      }
+    },
+    {
+      "name": "[Courier] Send GPS point",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Accept",
+            "value": "application/json"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{token}}",
+              "type": "string"
+            }
+          ]
+        },
+        "url": {
+          "raw": "{{base_url}}/api/courier/location",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "api",
+            "courier",
+            "location"
+          ]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"assignment_id\": 1,\n  \"latitude\": 3.5952,\n  \"longitude\": 98.6722,\n  \"accuracy\": 12.5,\n  \"speed_kmh\": 28,\n  \"recorded_at\": \"2026-11-09T10:00:00+07:00\"\n}"
+        }
+      }
+    },
+    {
+      "name": "[Courier] Stop GPS tracking",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Accept",
+            "value": "application/json"
+          }
+        ],
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{token}}",
+              "type": "string"
+            }
+          ]
+        },
+        "url": {
+          "raw": "{{base_url}}/api/courier/tracking/stop",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "api",
+            "courier",
+            "tracking",
+            "stop"
+          ]
+        }
+      }
+    }
+  ],
+  "variable": [
+    {
+      "key": "base_url",
+      "value": "http://localhost:8000"
+    },
+    {
+      "key": "token",
+      "value": ""
+    }
+  ]
+}

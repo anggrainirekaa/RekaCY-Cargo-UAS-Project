@@ -1,0 +1,20 @@
+REKACY - PROJECT LENGKAP (TIDAK PERLU TIMPA APA PUN)
+
+1. Extract zip ini ke folder mana saja (ini sudah project Laravel utuh, bukan tambalan).
+2. Klik dua kali  setup.bat   (pertama kali saja, butuh internet untuk composer & npm).
+   Otomatis: install paket, database SQLite + data demo, build tampilan, buka browser.
+3. Lain kali cukup klik dua kali  jalankan.bat
+
+Akun demo (password: password):
+   admin@rekacy.test | operator@rekacy.test | customer@rekacy.test | courier@rekacy.test
+
+Catatan:
+- Butuh PHP 8.2+, Composer, dan Node.js terpasang (sama seperti yang dipakai Laravel kamu tadi).
+- Folder vendor dan node_modules TIDAK ikut karena dibuat otomatis oleh setup.bat.
+- File .env sudah berisi APP_KEY lokal; ganti dengan "php artisan key:generate" kalau dipakai online.
+
+REAL-TIME (WebSocket / Reverb)
+- jalankan.bat otomatis membuka jendela kedua "RekaCy Reverb". JANGAN ditutup selama dipakai.
+- Tanpa Reverb, aplikasi tetap jalan: label di header berubah jadi "OFFLINE - POLLING" dan data diperbarui tiap 15 detik.
+- GPS HP butuh HTTPS (atau localhost). Di laptop yang sama, buka http://127.0.0.1:8000 - GPS browser laptop bisa dipakai.
+- Tanpa GPS asli: di halaman tugas kurir ada tombol "Simulasikan perjalanan (DEMO)" (titik ditandai DEMO).

@@ -1,0 +1,303 @@
+
+@import 'tailwindcss';
+
+@source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
+@source '../../storage/framework/views/*.php';
+@source '../../app/Enums/*.php';
+@source '../**/*.blade.php';
+@source '../**/*.js';
+
+/* ---------- RekaCy design tokens ---------- */
+@theme {
+    --font-sans: 'Inter', ui-sans-serif, system-ui, sans-serif;
+
+    --color-base: #070d18;
+    --color-deep: #0b1424;
+    --color-panel: #111d30;
+    --color-elev: #17243a;
+    --color-line: #26374d;
+    --color-gold: #f5be42;
+    --color-electric: #168bff;
+
+    --color-slate-50: #14213a;
+    --color-slate-100: #1a2940;
+    --color-slate-200: #26374d;
+    --color-slate-300: #334862;
+    --color-slate-400: #64748b;
+    --color-slate-500: #94a3b8;
+    --color-slate-600: #b3bfd0;
+    --color-slate-700: #cbd5e1;
+    --color-slate-800: #e2e8f0;
+    --color-slate-900: #f1f5f9;
+}
+
+html {
+    color-scheme: dark;
+}
+
+body {
+    background:
+        radial-gradient(1200px 600px at 80% -10%, rgba(34, 211, 238, .06), transparent 60%),
+        radial-gradient(900px 500px at -10% 110%, rgba(22, 139, 255, .06), transparent 60%),
+        #070d18;
+}
+
+/* ---------- Components ---------- */
+@layer components {
+
+    .card {
+        @apply relative rounded-xl border border-line p-4;
+        background: linear-gradient(180deg, rgba(23, 36, 58, .55), rgba(17, 29, 48, .92));
+        box-shadow: 0 1px 0 rgba(255, 255, 255, .03) inset, 0 8px 24px -12px rgba(0, 0, 0, .6);
+    }
+
+    .card::before {
+        content: '';
+        position: absolute;
+        inset: 0 0 auto 0;
+        height: 1px;
+        background: linear-gradient(90deg, transparent, rgba(34, 211, 238, .45), transparent);
+        opacity: .6;
+    }
+
+    .card-title {
+        @apply text-[13px] font-semibold uppercase tracking-wider text-slate-800;
+    }
+
+    .card-sub {
+        @apply text-xs text-slate-500;
+    }
+
+    .badge {
+        @apply inline-flex items-center gap-1 rounded-md px-2 py-0.5 text-[11px] font-semibold ring-1 ring-inset;
+    }
+
+    /* Base button */
+    .btn {
+        @apply inline-flex items-center justify-center gap-2 rounded-lg px-3.5 py-2 text-sm font-semibold transition focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-400 focus-visible:ring-offset-2 focus-visible:ring-offset-base disabled:opacity-50;
+    }
+
+    /* Primary button */
+    .btn-primary {
+        @apply inline-flex items-center justify-center gap-2 rounded-lg px-3.5 py-2 text-sm font-semibold transition focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-400 focus-visible:ring-offset-2 focus-visible:ring-offset-base disabled:opacity-50 bg-cyan-400 text-base hover:bg-cyan-300;
+        box-shadow: 0 0 18px -4px rgba(34, 211, 238, .6);
+    }
+
+    /* Navy button */
+    .btn-navy {
+        @apply inline-flex items-center justify-center gap-2 rounded-lg px-3.5 py-2 text-sm font-semibold transition focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-400 focus-visible:ring-offset-2 focus-visible:ring-offset-base disabled:opacity-50 bg-electric/90 text-white hover:bg-electric;
+    }
+
+    /* Ghost button */
+    .btn-ghost {
+        @apply inline-flex items-center justify-center gap-2 rounded-lg px-3.5 py-2 text-sm font-semibold transition focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-400 focus-visible:ring-offset-2 focus-visible:ring-offset-base disabled:opacity-50 bg-elev text-slate-700 ring-1 ring-line hover:bg-slate-100 hover:text-white;
+    }
+
+    /* Danger button */
+    .btn-danger {
+        @apply inline-flex items-center justify-center gap-2 rounded-lg px-3.5 py-2 text-sm font-semibold transition focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-400 focus-visible:ring-offset-2 focus-visible:ring-offset-base disabled:opacity-50 bg-red-500/10 text-red-300 ring-1 ring-red-400/30 hover:bg-red-500/20;
+    }
+
+    .label {
+        @apply mb-1 block text-[11px] font-semibold uppercase tracking-wider text-slate-500;
+    }
+
+    .input {
+        @apply block w-full rounded-lg border-0 bg-deep px-3 py-2 text-sm text-slate-900 ring-1 ring-line placeholder:text-slate-400 focus:ring-2 focus:ring-cyan-400;
+    }
+
+    .th {
+        @apply px-3 py-2.5 text-left text-[11px] font-semibold uppercase tracking-wider text-slate-500;
+    }
+
+    .td {
+        @apply px-3 py-2.5 text-sm text-slate-700;
+    }
+
+    .kbd {
+        @apply rounded border border-line bg-deep px-1.5 py-0.5 text-[10px] font-semibold text-slate-500;
+    }
+
+    .link {
+        @apply font-semibold text-cyan-300 hover:text-cyan-200 hover:underline;
+    }
+}
+
+/* ---------- Command-center map ---------- */
+
+.rk-map .leaflet-tile-pane {
+    filter: invert(1) hue-rotate(188deg) brightness(.78) contrast(.95) saturate(.55);
+}
+
+.rk-map {
+    background: #060c17;
+}
+
+.leaflet-container {
+    font-family: inherit;
+}
+
+.leaflet-control-zoom a,
+.leaflet-bar a {
+    background: #111d30 !important;
+    color: #cbd5e1 !important;
+    border-color: #26374d !important;
+}
+
+.leaflet-control-attribution {
+    background: rgba(7, 13, 24, .75) !important;
+    color: #64748b !important;
+}
+
+.leaflet-control-attribution a {
+    color: #94a3b8 !important;
+}
+
+.leaflet-popup-content-wrapper,
+.leaflet-popup-tip {
+    background: #111d30;
+    color: #e2e8f0;
+    border: 1px solid #26374d;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, .6);
+}
+
+.leaflet-popup-content {
+    margin: 10px 12px;
+    font-size: 12px;
+    line-height: 1.5;
+}
+
+.leaflet-popup-content a {
+    color: #22d3ee;
+    font-weight: 600;
+}
+
+.leaflet-container a.leaflet-popup-close-button {
+    color: #94a3b8;
+}
+
+/* ---------- Route styles ---------- */
+
+.route-cyan {
+    filter: drop-shadow(0 0 3px #22d3ee);
+}
+
+.route-gold {
+    filter: drop-shadow(0 0 3px #f5be42);
+}
+
+.route-red {
+    filter: drop-shadow(0 0 4px #ef4444);
+}
+
+.route-green {
+    filter: drop-shadow(0 0 2px #22c55e);
+}
+
+.route-flow {
+    stroke-dasharray: 5 11;
+    animation: rk-flow 1.4s linear infinite;
+}
+
+@keyframes rk-flow {
+    to {
+        stroke-dashoffset: -32;
+    }
+}
+
+/* ---------- Map markers ---------- */
+
+.rk-pin {
+    position: relative;
+    width: 22px;
+    height: 22px;
+}
+
+.rk-pin .core {
+    position: absolute;
+    inset: 5px;
+    border-radius: 9999px;
+    border: 2px solid #070d18;
+    background: var(--c, #22d3ee);
+    box-shadow: 0 0 10px var(--c, #22d3ee);
+}
+
+.rk-pin .ring {
+    position: absolute;
+    inset: 0;
+    border-radius: 9999px;
+    border: 1px solid var(--c, #22d3ee);
+    animation: rk-pulse 2.2s ease-out infinite;
+    opacity: 0;
+}
+
+@keyframes rk-pulse {
+    0% {
+        transform: scale(.5);
+        opacity: .9;
+    }
+
+    100% {
+        transform: scale(1.6);
+        opacity: 0;
+    }
+}
+
+.rk-port {
+    width: 10px;
+    height: 10px;
+    border-radius: 2px;
+    background: #168bff;
+    border: 1px solid #9ec9ff;
+    transform: rotate(45deg);
+    box-shadow: 0 0 8px #168bff;
+}
+
+.rk-exc {
+    width: 20px;
+    height: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 6px;
+    font-size: 12px;
+    font-weight: 800;
+    color: #070d18;
+    background: var(--c, #f5be42);
+    border: 2px solid #070d18;
+    box-shadow: 0 0 12px var(--c, #f5be42);
+}
+
+/* ---------- Accessibility ---------- */
+
+@media (prefers-reduced-motion: reduce) {
+    .route-flow,
+    .rk-pin .ring {
+        animation: none;
+    }
+}
+
+/* ---------- Scrollbars ---------- */
+
+* {
+    scrollbar-width: thin;
+    scrollbar-color: #26374d transparent;
+}
+
+/* ---------- Skeleton loading ---------- */
+
+@keyframes rk-skeleton {
+    0%, 100% {
+        opacity: .35;
+    }
+
+    50% {
+        opacity: .7;
+    }
+}
+
+.skeleton {
+    background: #17243a;
+    animation: rk-skeleton 1.4s ease-in-out infinite;
+    border-radius: .5rem;
+}
